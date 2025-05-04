@@ -1,14 +1,14 @@
 interface Props {
-  score: number;
+  result: number;
   maxScore: number;
 }
 
-export function GameSummary({ score, maxScore }: Props) {
+export function GameSummary({ result, maxScore }: Props) {
   return (
     <div className=" text-center bg-gray-50 p-8 rounded shadow max-w-md mx-auto">
       <h2 className="text-3xl font-bold text-gray-800 mb-4">🏁 Game Over!</h2>
       <p className="text-xl text-gray-700">
-        Your Score: {score} / {maxScore}
+        Your Score: {result} / {maxScore}
       </p>
       <p className="mt-4 text-gray-500">Thanks for playing! 🎵</p>
       <div className="mt-12">

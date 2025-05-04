@@ -10,12 +10,12 @@ export default function AddVideoPage() {
   const [genres, setGenres] = useState("");
   const [videoIdInput, setVideoIdInput] = useState("");
 
-  const API_KEY = "AIzaSyCKOrCUfHuVMYZLTzweEqbeL010L2OHrgI";
+  const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
 
   const fetchVideoData = async (id: string) => {
     try {
       const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${id}&key=${API_KEY}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${id}&key=${apiKey}`
       );
       const data = await res.json();
       const item = data.items[0];
@@ -43,7 +43,7 @@ export default function AddVideoPage() {
   const fetchRandomMusicVideo = async () => {
     try {
       const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&regionCode=US&videoCategoryId=10&maxResults=25&key=${API_KEY}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&regionCode=US&videoCategoryId=10&maxResults=25&key=${apiKey}`
       );
       const data = await res.json();
       const items = data.items;

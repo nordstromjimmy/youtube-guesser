@@ -25,9 +25,6 @@ export default function HomePage() {
     <main className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col items-center px-4 py-40">
       <h1 className="text-4xl font-bold mb-8 text-center">
         🎯 YouTube Guesser{" "}
-        <span className="bg-blue-900 text-2xl font-bold p-4 rounded-full">
-          MUSIC
-        </span>
       </h1>
       <div className="text-center mt-10">
         <h1 className="text-3xl font-bold text-white mb-4">

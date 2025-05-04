@@ -3,25 +3,40 @@
 import { useEffect, useState } from "react";
 import { VideoPlayer } from "./VideoPlayer";
 import { VideoData } from "@/types/video";
+import { scoreGuess } from "@/lib/scoring";
 
 interface Props {
   video: VideoData;
   round: number;
   totalRounds: number;
-  onComplete: (score: number) => void;
+  onComplete: (result: number) => void;
 }
 
 export function GameRound({ video, round, totalRounds, onComplete }: Props) {
   const [timeLeft, setTimeLeft] = useState(30);
-  const [guess, setGuess] = useState({ artist: "", song: "" });
   const [submitted, setSubmitted] = useState(false);
   const [isLoadingNext, setIsLoadingNext] = useState(false);
+  const [guess, setGuess] = useState({
+    artist: "",
+    song: "",
+    year: "",
+    views: "",
+    likes: "",
+    comments: "",
+  });
 
   // ⏱ Reset state every time a new video is passed in
   useEffect(() => {
     setTimeLeft(30);
     setSubmitted(false);
-    setGuess({ artist: "", song: "" });
+    setGuess({
+      artist: "",
+      song: "",
+      year: "",
+      views: "",
+      likes: "",
+      comments: "",
+    });
   }, [video]);
 
   // ⏱ Countdown timer runs just once per round
@@ -43,19 +58,31 @@ export function GameRound({ video, round, totalRounds, onComplete }: Props) {
   }, [submitted]);
 
   const handleSubmit = () => {
+    if (submitted) return;
     setSubmitted(true);
     setIsLoadingNext(true);
 
-    let points = 0;
-    if (guess.artist.trim().toLowerCase() === video.artist.toLowerCase()) {
-      points += 50;
-    }
-    if (guess.song.trim().toLowerCase() === video.song.toLowerCase()) {
-      points += 50;
-    }
+    const result = scoreGuess(
+      {
+        artist: video.artist,
+        song: video.song,
+        year: video.year,
+        views: video.views,
+        likes: video.likes,
+        comments: video.comments,
+      },
+      {
+        artist: guess.artist,
+        song: guess.song,
+        year: Number(guess.year),
+        views: Number(guess.views),
+        likes: Number(guess.likes),
+        comments: Number(guess.comments),
+      }
+    );
 
     setTimeout(() => {
-      onComplete(points);
+      onComplete(result);
       setIsLoadingNext(false);
     }, 2000);
   };
@@ -81,6 +108,7 @@ export function GameRound({ video, round, totalRounds, onComplete }: Props) {
         </div>
 
         <div className="flex flex-col gap-4 max-w-md mx-auto">
+          {/* Core fields */}
           <input
             type="text"
             placeholder="Guess the artist"
@@ -95,6 +123,40 @@ export function GameRound({ video, round, totalRounds, onComplete }: Props) {
             value={guess.song}
             onChange={(e) => setGuess({ ...guess, song: e.target.value })}
           />
+          <input
+            type="number"
+            placeholder="Guess the upload year"
+            className="p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400"
+            value={guess.year || ""}
+            onChange={(e) => setGuess({ ...guess, year: e.target.value })}
+          />
+
+          <hr className="my-4 border-gray-300" />
+
+          {/* Bonus fields */}
+          <p className="text-sm text-gray-500 mb-1">🎁 Bonus Guesses</p>
+
+          <input
+            type="number"
+            placeholder="Views"
+            className="p-2 rounded border border-gray-200"
+            value={guess.views || ""}
+            onChange={(e) => setGuess({ ...guess, views: e.target.value })}
+          />
+          <input
+            type="number"
+            placeholder="Likes"
+            className="p-2 rounded border border-gray-200"
+            value={guess.likes || ""}
+            onChange={(e) => setGuess({ ...guess, likes: e.target.value })}
+          />
+          <input
+            type="number"
+            placeholder="Comments"
+            className="p-2 rounded border border-gray-200"
+            value={guess.comments || ""}
+            onChange={(e) => setGuess({ ...guess, comments: e.target.value })}
+          />
           {!submitted && (
             <button
               onClick={handleSubmit}
@@ -105,7 +167,7 @@ export function GameRound({ video, round, totalRounds, onComplete }: Props) {
           )}
           {submitted && isLoadingNext && (
             <div className="text-center text-lg font-semibold text-gray-500 mt-6 animate-pulse">
-              ⏳ Submitting guess... Loading next video...
+              ⏳ Loading next video..
             </div>
           )}
         </div>

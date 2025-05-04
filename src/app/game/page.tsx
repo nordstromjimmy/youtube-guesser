@@ -53,7 +53,7 @@ export default function GamePage() {
           onComplete={handleRoundComplete}
         />
       ) : (
-        <GameSummary score={score} maxScore={TOTAL_ROUNDS * 100} />
+        <GameSummary result={score} maxScore={TOTAL_ROUNDS * 100} />
       )}
     </div>
   );
