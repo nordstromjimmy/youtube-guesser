@@ -47,7 +47,7 @@ export function GameRound({ video, round, totalRounds, onComplete }: Props) {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer); // stop timer
-          handleSubmit(); // auto-submit when timer hits 0
+          handleSubmit(); // auto-submit when timer hits 0 -- TOTO - DOES NOT SEEM TO WORK
           return 0;
         }
         return prev - 1;
