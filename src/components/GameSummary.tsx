@@ -13,7 +13,7 @@ export function GameSummary({ result, maxScore }: Props) {
       <p className="mt-4 text-gray-500">Thanks for playing! 🎵</p>
       <div className="mt-12">
         <a
-          href="/"
+          href="/music"
           className="bg-red-500 hover:bg-red-600 text-white font-semibold  px-6 py-3 rounded shadow"
         >
           Back To Home
